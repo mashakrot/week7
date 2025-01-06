@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/styles.css">
+    <title>Image Gallery</title>
+    <script src="./js/test.js" defer></script>
+</head>
+<body>
+    <button id="logout">Logout</button>
+    <h1>Image Gallery</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="image" id="image" accept="image/*" required />
+        <textarea placeholder="Enter description" name="desc" id="desc"></textarea>
+        <button type="submit">Upload</button>
+    </form>
+    <div id="imageGrid"></div>
+
+    <div id="list-box">
+        <h3>Active Users</h3>
+        <ul id="user-list"></ul>
+    </div>
+
+    <p id="error"></p>
+
+</body>
+
+</html>
