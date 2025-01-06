@@ -19,9 +19,13 @@ router.post("/register",
             return res.status(400).json({errors: errors.array()})
             
         }
+        if (!req.body.email || !req.body.password) {
+            return res.status(400).json({ error: "Email and password are required" });
+          }
     try {
         const existingUser: IUser | null = await User.findOne({email: req.body.email})
         console.log(existingUser)
+        console.log('hehehehehhe')
         if (existingUser) {
             return res.status(403).json({email: "email already in use"})
         }
@@ -29,12 +33,12 @@ router.post("/register",
         const salt: string = bcrypt.genSaltSync(10)
         const hash: string = bcrypt.hashSync(req.body.password, salt)
 
-        await User.create({
+        const newUser = await User.create({
             email: req.body.email,
             password: hash
         })
 
-        return res.status(200).json({message: "User registered successfully"})
+        return res.status(200).json({message: "User registered successfully" + {newUser}})
 
     } catch (error: any) {
         console.error(`Error during registration: ${error}`)

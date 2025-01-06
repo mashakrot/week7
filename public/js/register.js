@@ -21,7 +21,11 @@ const fetchData = async (event) => {
             body: JSON.stringify(formData)
         })
         if (!response.ok) {
-            document.getElementById("error").innerText = "Error when trying to register. Please try again."
+            if(response.status == 403) {
+                document.getElementById("error").innerText = "Error when trying to register. Email already in use. Please try again."
+            } else {   
+                document.getElementById("error").innerText = "Error when trying to register. Please try again."
+            }
         } else {
             alert("Registration successful!");
             window.location.href = "/login.html"
