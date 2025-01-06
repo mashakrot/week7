@@ -2,7 +2,7 @@ const token = localStorage.getItem("token");
     if (!token) {
       window.location.href = "/login.html";
     } else {
-      fetch("http://localhost:3000/api/private", {
+      fetch("/private", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

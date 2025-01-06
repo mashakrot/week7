@@ -7,7 +7,7 @@ import { validateToken } from '../middleware/validateToken'
 
 const router: Router = Router()
 
-router.post("/user/register", 
+router.post("/register", 
     // body("username").trim().isLength({min: 3}).escape(),
     body("email").isEmail().normalizeEmail().escape(),
     body("password").isLength({min: 5}),
@@ -45,7 +45,7 @@ router.post("/user/register",
 )
 
 
-router.get("/api/user/list", validateToken, async (req: Request, res: Response) => {
+router.get("/list", validateToken, async (req: Request, res: Response) => {
     try {
         const users: IUser[] = await User.find()
         return res.status(200).json(users)
