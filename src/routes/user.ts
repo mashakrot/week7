@@ -7,6 +7,8 @@ import { validateToken } from '../middleware/validateToken'
 
 const router: Router = Router()
 
+const users: { email: string; password: string }[] = [];
+
 router.post("/register", 
     // body("username").trim().isLength({min: 3}).escape(),
     body("email").isEmail().normalizeEmail().escape(),
@@ -21,29 +23,31 @@ router.post("/register",
         }
         if (!req.body.email || !req.body.password) {
             return res.status(400).json({ error: "Email and password are required" });
-          }
-    try {
-        const existingUser: IUser | null = await User.findOne({email: req.body.email})
-        console.log(existingUser)
-        console.log('hehehehehhe')
-        if (existingUser) {
-            return res.status(403).json({email: "email already in use"})
         }
 
-        const salt: string = bcrypt.genSaltSync(10)
-        const hash: string = bcrypt.hashSync(req.body.password, salt)
 
-        const newUser = await User.create({
-            email: req.body.email,
-            password: hash
-        })
+        try {
+            const existingUser: IUser | null = await User.findOne({email: req.body.email})
+            console.log(existingUser)
+            if (existingUser) {
+                return res.status(403).json({email: "email already in use"})
+            }
 
-        return res.status(200).json({message: "User registered successfully" + {newUser}})
+            const salt: string = bcrypt.genSaltSync(10)
+            const hash: string = bcrypt.hashSync(req.body.password, salt)
 
-    } catch (error: any) {
-        console.error(`Error during registration: ${error}`)
-        return res.status(500).json({error: "Internal Server Error"})
-    }
+            const newUser = await User.create({
+                email: req.body.email,
+                password: hash
+            })
+            users.push(newUser);
+
+            return res.status(200).json({message: "User registered successfully" + {newUser}})
+
+        } catch (error: any) {
+            console.error(`Error during registration: ${error}`)
+            return res.status(500).json({error: "Internal Server Error"})
+        }
 
     }
 )
