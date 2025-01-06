@@ -13,7 +13,7 @@ const fetchData = async (event) => {
     }
 
     try {
-        const response = await fetch("/user/register",  {
+        const response = await fetch("http://localhost:3000/api/user/register",  {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -23,6 +23,7 @@ const fetchData = async (event) => {
         if (!response.ok) {
             document.getElementById("error").innerText = "Error when trying to register. Please try again."
         } else {
+            alert("Registration successful!");
             window.location.href = "/login.html"
         }
 
