@@ -44,6 +44,18 @@ router.post("/user/register",
     }
 )
 
+
+router.get("/api/user/list", validateToken, async (req: Request, res: Response) => {
+    try {
+        const users: IUser[] = await User.find()
+        return res.status(200).json(users)
+    } catch (error: any) {
+        console.log(`Error while fecthing users ${error}`)
+        return res.status(500).json({error: "Internal Server Error"})
+    }
+
+})
+
 router.post("/login",
     body("email").isEmail().trim().escape(),
     body("password").escape(),
@@ -76,18 +88,6 @@ router.post("/login",
         }
     }
 )
-
-
-router.get("/list", validateToken, async (req: Request, res: Response) => {
-    try {
-        const users: IUser[] = await User.find()
-        return res.status(200).json(users)
-    } catch (error: any) {
-        console.log(`Error while fecthing users ${error}`)
-        return res.status(500).json({error: "Internal Server Error"})
-    }
-
-})
 
 
 
