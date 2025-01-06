@@ -8,7 +8,8 @@ import { validateToken } from '../middleware/validateToken'
 const router: Router = Router()
 
 router.post("/register", 
-    body("username").trim().isLength({min: 3}).escape(),
+    // body("username").trim().isLength({min: 3}).escape(),
+    body("email").isEmail().normalizeEmail().escape(),
     body("password").isLength({min: 5}),
     async (req: Request, res: Response) => {
         const errors: Result<ValidationError> = validationResult(req)
@@ -19,17 +20,17 @@ router.post("/register",
             
         }
     try {
-        const existingUser: IUser | null = await User.findOne({username: req.body.username})
+        const existingUser: IUser | null = await User.findOne({email: req.body.email})
         console.log(existingUser)
         if (existingUser) {
-            return res.status(403).json({username: "username already in use"})
+            return res.status(403).json({email: "email already in use"})
         }
 
         const salt: string = bcrypt.genSaltSync(10)
         const hash: string = bcrypt.hashSync(req.body.password, salt)
 
         await User.create({
-            username: req.body.username,
+            email: req.body.email,
             password: hash
         })
 
@@ -44,11 +45,11 @@ router.post("/register",
 )
 
 router.post("/login",
-    body("username").trim().escape(),
+    body("email").isEmail().trim().escape(),
     body("password").escape(),
     async (req: Request, res: Response) => {
         try {
-            const user: IUser | null = await User.findOne({username: req.body.username})
+            const user: IUser | null = await User.findOne({email: req.body.email})
 
             //console.log(user)
 
@@ -59,7 +60,7 @@ router.post("/login",
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 const jwtPayload: JwtPayload = {
                     id: user._id,
-                    username: user.username
+                    email: user.email
                 }
                 const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, { expiresIn: "2m"})
 
