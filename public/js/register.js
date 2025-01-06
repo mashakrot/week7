@@ -13,7 +13,7 @@ const fetchData = async (event) => {
     }
 
     try {
-        const response = await fetch("/user/register",  {
+        const response = await fetch("/api/user/register",  {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

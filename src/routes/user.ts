@@ -9,7 +9,7 @@ const router: Router = Router()
 
 const users: { email: string; password: string }[] = [];
 
-router.post("/register", 
+router.post("/api/user/register", 
     // body("username").trim().isLength({min: 3}).escape(),
     body("email").isEmail().normalizeEmail().escape(),
     body("password").isLength({min: 5}),
@@ -53,7 +53,7 @@ router.post("/register",
 )
 
 
-router.get("/list", validateToken, async (req: Request, res: Response) => {
+router.get("/user/list", validateToken, async (req: Request, res: Response) => {
     try {
         const users: IUser[] = await User.find()
         return res.status(200).json(users)
@@ -64,14 +64,14 @@ router.get("/list", validateToken, async (req: Request, res: Response) => {
 
 })
 
-router.post("/login",
+router.post("/api/user/login",
     body("email").isEmail().trim().escape(),
     body("password").escape(),
     async (req: Request, res: Response) => {
         try {
             const user: IUser | null = await User.findOne({email: req.body.email})
 
-            //console.log(user)
+            console.log(user)
 
             if (!user) {
                 return res.status(401).json({message: "Login failed"})
