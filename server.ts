@@ -25,7 +25,7 @@ app.use(morgan("dev"))
 
 app.use(express.static(path.join(__dirname, "../public")))
 app.use("/", router)
-app.use("/user", userRouter)
+app.use("/", userRouter)
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)

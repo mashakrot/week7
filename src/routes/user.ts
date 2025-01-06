@@ -7,7 +7,7 @@ import { validateToken } from '../middleware/validateToken'
 
 const router: Router = Router()
 
-router.post("/register", 
+router.post("/user/register", 
     // body("username").trim().isLength({min: 3}).escape(),
     body("email").isEmail().normalizeEmail().escape(),
     body("password").isLength({min: 5}),

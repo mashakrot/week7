@@ -8,7 +8,7 @@ const fetchData = async (event) => {
     event.preventDefault()
 
     const formData = {
-        username: event.target.username.value,
+        email: event.target.email.value,
         password: event.target.password.value,
     }
 
